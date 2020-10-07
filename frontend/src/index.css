@@ -1,3 +1,11 @@
 main {
     min-height: 80vh;
 }
+.card .price {
+    color: salmon;
+    padding-top: 10px;
+}
+
+.product-card {
+    width: 250px;
+}
