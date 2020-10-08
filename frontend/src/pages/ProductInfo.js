@@ -1,11 +1,27 @@
-import React from "react";
-import products from "../products";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Image, ListGroup, Card, Row, Col, Button } from "react-bootstrap";
 import Rating from "../components/Rating";
+import axios from "axios";
 
 function ProductInfo({ match }) {
-  const product = products.find((prod) => prod._id === match.params.id);
+  const [product, setProduct] = useState({})
+
+  
+  useEffect(() => {
+    //create function for async
+    const fetchProduct = async () => {
+        //fetch data
+        const { data } = await axios.get(`/api/products/${match.params.id}`)
+        //set empty array to products
+        setProduct(data)
+    }
+
+    fetchProduct()
+}, [])
+//empty array is for dependencies that will change when fired
+
+
   return (
     <div>
       <Row>
