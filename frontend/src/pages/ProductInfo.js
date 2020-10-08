@@ -15,7 +15,7 @@ function ProductInfo({ match }) {
         <Col md={3}>
           <ListGroup variant="flush">
             <ListGroup.Item variant="info" className="product-page-title">
-              <h5>{product.name}</h5>
+              <h5><u>{product.name}</u></h5>
             </ListGroup.Item>
             <ListGroup.Item>
               <Rating
