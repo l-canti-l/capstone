@@ -10,7 +10,7 @@ function Home() {
             <h2>Latest Work</h2>
             <Row>
                 {products.map(product=>(
-                    <Col key={product._id}  style={{ flexGrow: 0 }}>
+                    <Col key={product._id} className='product-container'>
                         <Product product={product} />
                     </Col>
                 ))}

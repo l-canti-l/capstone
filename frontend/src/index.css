@@ -1,6 +1,8 @@
 main {
     min-height: 80vh;
 }
+
+
 .card .price {
     color: salmon;
     padding-top: 10px;
@@ -9,3 +11,20 @@ main {
 .product-card {
     width: 250px;
 }
+
+.col.product-container {
+    flex-grow: 0;
+}
+
+.product-page-title {
+    text-align: center;
+}
+
+.list-group-item {
+    pointer-events: none;
+}
+
+.col.product-page-shop-left {
+    flex-grow: 0;
+}
+
