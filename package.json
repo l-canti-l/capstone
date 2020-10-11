@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Capstone Ecommerce App",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node backend/server",
@@ -21,6 +22,7 @@
   },
   "homepage": "https://github.com/l-canti-l/capstone#readme",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1"
   },
   "devDependencies": {
