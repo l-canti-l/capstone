@@ -18,7 +18,7 @@ function ProductInfo({ match }) {
     }
 
     fetchProduct()
-}, [])
+}, [match])
 //empty array is for dependencies that will change when fired
 
 

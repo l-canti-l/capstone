@@ -20,7 +20,7 @@ function Header() {
               </LinkContainer>
               <LinkContainer to="/login">
                 <Nav.Link>
-                  <i class="fas fa-dungeon"></i> Sign In
+                  <i className="fas fa-dungeon"></i> Sign In
                 </Nav.Link>
               </LinkContainer>
             </Nav>
