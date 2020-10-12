@@ -1,6 +1,5 @@
 const products = [
   {
-    _id: '1',
     name: 'Print 1',
     image: '/images/82C86DN2.jpeg',
     description:
@@ -13,7 +12,6 @@ const products = [
     numReviews: 12,
   },
   {
-    _id: '2',
     name: 'Print 2',
     image: '/images/IZPH8aoI.jpeg',
     description:
@@ -26,7 +24,6 @@ const products = [
     numReviews: 8,
   },
   {
-    _id: '3',
     name: 'Print 3',
     image: '/images/jBlGpezu.jpeg',
     description:
@@ -39,7 +36,6 @@ const products = [
     numReviews: 12,
   },
   {
-    _id: '4',
     name: 'Print 4',
     image: '/images/JtRP6VE6.jpeg',
     description:
@@ -52,7 +48,6 @@ const products = [
     numReviews: 12,
   },
   {
-    _id: '5',
     name: 'Print 5',
     image: '/images/p.jpeg',
     description:
@@ -65,7 +60,6 @@ const products = [
     numReviews: 10,
   },
   {
-    _id: '6',
     name: 'Print 6',
     image: '/images/UhsgKrmx.jpeg',
     description:
