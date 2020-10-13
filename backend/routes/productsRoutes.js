@@ -18,9 +18,10 @@ router.get('/:id', asyncHandler(async(request, response) => {
     
     //check if product exists
     if(product) {
-    response.json(product)
+        response.json(product)
     } else {
-        response.status(404).json({ message: 'Product not found' })
+        response.status(404)
+        throw new Error('Product does not exist')
     }
 }));
 
