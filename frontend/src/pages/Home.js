@@ -1,38 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import { Row, Col } from 'react-bootstrap';
-import Product from '../components/Product';
-import axios from 'axios';
-
+import React, { useEffect } from "react";
+import { Row, Col } from "react-bootstrap";
+import Product from "../components/Product";
+import { useDispatch, useSelector } from "react-redux";
+import { listProducts } from "../actions/products";
 
 function Home() {
+  //define dispatch variable
+  const dispatch = useDispatch();
+  //get state
+  const productList = useSelector((state) => state.productList);
+  //grab pieces of state from reducer
+  const { loading, error, products } = productList;
 
-    const [products, setProducts] = useState([]);
+  useEffect(() => {
+    dispatch(listProducts());
+  }, [dispatch]);
 
-    useEffect(() => {
-        //create function for async
-        const fetchProducts = async () => {
-            //fetch data
-            const { data } = await axios.get('/api/products')
-            //set empty array to products
-            setProducts(data)
-        }
-
-        fetchProducts()
-    }, [])
-    //empty array is for dependencies that will change when fired
-
-    return (
-        <div>
-            <h2>Latest Work</h2>
-            <Row>
-                {products.map(product=>(
-                    <Col key={product._id} className='product-container'>
-                        <Product product={product} />
-                    </Col>
-                ))}
-            </Row>
-        </div>
-    )
+  return (
+    <div>
+      <h2>Latest Work</h2>
+      {/* check if loading */}
+      {loading ? (
+        <h3>Loading...</h3>
+        // display error
+      ) : error ? (
+        <h5>{error}</h5>
+      ) : (
+        // display products
+        <Row>
+          {products.map((product) => (
+            <Col key={product._id} className="product-container">
+              <Product product={product} />
+            </Col>
+          ))}
+        </Row>
+      )}
+    </div>
+  );
 }
 
-export default Home
+export default Home;
