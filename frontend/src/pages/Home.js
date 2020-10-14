@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
+import Loader from '../components/Loader';
+import Message from '../components/Message';
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/products";
 
@@ -21,10 +23,10 @@ function Home() {
       <h2>Latest Work</h2>
       {/* check if loading */}
       {loading ? (
-        <h3>Loading...</h3>
+        <Loader />
         // display error
       ) : error ? (
-        <h5>{error}</h5>
+        <Message variant='danger'>{error}</Message>
       ) : (
         // display products
         <Row>
