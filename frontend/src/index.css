@@ -20,10 +20,6 @@ main {
     text-align: center;
 }
 
-.list-group-item {
-    pointer-events: none;
-}
-
 .col.product-page-shop-left {
     flex-grow: 0;
 }
