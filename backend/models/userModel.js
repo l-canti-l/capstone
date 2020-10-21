@@ -27,6 +27,18 @@ const userSchema = mongoose.Schema({
 userSchema.methods.authenticatePassword = async function(enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password)
 }
+//encrypt password when submitted
+userSchema.pre('save', async function (next) {
+    //only if passsword field is sent or modified
+    if(!this.isModified('password')) {
+        next()
+    }
+    //if modified
+    const salt = await bcrypt.genSalt(10);
+    //reset password to be hashed
+    this.password = await bcrypt.hash(this.password, salt);
+
+})
 
 const User = mongoose.model('User', userSchema)
 
