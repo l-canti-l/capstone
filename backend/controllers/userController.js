@@ -22,4 +22,21 @@ const authenticateUser = asyncHandler(async (request, response) => {
    }
 })
 
-export { authenticateUser }
+//get user profile GET to api/users/profile, private route
+const getProfile = asyncHandler(async (request, response) => {
+    const user = await User.findById(request.user._id)
+
+    if(user) {
+        response.json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            isAdmin: user.isAdmin,
+        })
+    } else {
+        response.status(404)
+        throw new Error('user not found')
+    }
+ })
+
+export { authenticateUser, getProfile }
