@@ -10,7 +10,7 @@ import {
   Button,
   Card,
 } from "react-bootstrap";
-import { addToCart } from "../actions/cartActions";
+import { addToCart, removeFromCart } from "../actions/cartActions";
 import { Link } from "react-router-dom";
 
 //match for id, location for qty query, history for redirect
@@ -32,7 +32,7 @@ function Cart({ match, location, history }) {
   }, [dispatch, productId, qty]);
 
   const removeFromCartHandler = (id) => {
-    console.log("remove");
+    dispatch(removeFromCart(id))
   }
 
   const checkoutHandler = () => {
@@ -80,7 +80,7 @@ function Cart({ match, location, history }) {
                     <Button
                       type="button"
                       variant="info"
-                      onClick={() => removeFromCartHandler(item.product)}
+                      onClick={() => removeFromCartHandler(item.productId)}
                     >
                       <i className="fas fa-trash"></i>
                     </Button>
