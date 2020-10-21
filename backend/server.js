@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import productsRoutes from './routes/productsRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 import { notFound, handler } from './middleware/errorMiddleware.js'
 
 dotenv.config();
@@ -10,13 +11,17 @@ connectDB();
 // initialize express
 const app = express();
 
+//body parser
+app.use(express.json());
+
 //create route, is api running
 app.get('/', (request, response) => {
     response.send('API is running......')
 });
 
-//mount product routes
+//mount routes
 app.use('/api/products', productsRoutes)
+app.use('/api/users', userRoutes)
 
 //middleware
 app.use(notFound)
