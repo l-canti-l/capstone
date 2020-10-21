@@ -1,19 +1,20 @@
 import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
+import generateToken from '../tools/generateToken.js'
 
 //authorize user and get token, POST to api/users/login
-const authorizeUser = asyncHandler(async (request, response) => {
+const authenticateUser = asyncHandler(async (request, response) => {
    const { email, password } = request.body
     //find user by email
    const user = await User.findOne({ email: email })
    //check if user exists
-   if(user && (await user.validatePassword(password))) {
+   if(user && (await user.authenticatePassword(password))) {
         response.json({
             _id: user._id,
             name: user.name,
             email: user.email,
             isAdmin: user.isAdmin,
-            token: null
+            token: generateToken(user._id)
         })
    } else {
        response.status(401)
@@ -21,4 +22,4 @@ const authorizeUser = asyncHandler(async (request, response) => {
    }
 })
 
-export { authorizeUser }
+export { authenticateUser }
