@@ -1,4 +1,4 @@
-import { USER_LOGIN_REQUEST, USER_LOGIN_REQUEST_SUCCESS, USER_LOGIN_REQUEST_FAIL } from "./types";
+import { USER_LOGOUT, USER_LOGIN_REQUEST, USER_LOGIN_REQUEST_SUCCESS, USER_LOGIN_REQUEST_FAIL } from "./types";
 import axios from 'axios';
 
 //action that requests login token
@@ -35,4 +35,9 @@ export const login = (email, password) => async (dispatch) => {
                 : error.message,
           });
     }
+}
+
+export const logout = () => (dispatch) => {
+    localStorage.removeItem('userInfo')
+    dispatch({type: USER_LOGOUT})
 }
