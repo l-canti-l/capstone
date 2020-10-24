@@ -31,7 +31,7 @@ export const login = (email, password) => async (dispatch) => {
             type: USER_LOGIN_REQUEST_FAIL,
             payload:
               error.response && error.response.data.message
-                ? error.data.message
+                ? error.response.data.message
                 : error.message,
           });
     }
