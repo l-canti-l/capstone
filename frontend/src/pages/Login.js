@@ -68,7 +68,7 @@ function Login({location, history}) {
           New User?{" "}
           <Link
             to={redirect ? `/register?redirect=${redirect}` : "/register"}
-          ></Link>
+          >Sell Yr Soul</Link>
         </Col>
       </Row>
     </FormWrapper>
