@@ -31,3 +31,7 @@ main {
     display: block;
 }
 
+.orders {
+    display: flex;
+    justify-content: right;
+}
