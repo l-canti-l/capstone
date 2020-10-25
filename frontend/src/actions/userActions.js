@@ -9,6 +9,9 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_REQUEST_SUCCESS,
   USER_DETAILS_REQUEST_FAIL,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
+  USER_UPDATE_FAIL,
 } from "./types";
 import axios from "axios";
 
@@ -128,6 +131,45 @@ export const getDetails = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_DETAILS_REQUEST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateUser = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_UPDATE_REQUEST,
+    });
+    //get info for token from state
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    //check if header has correct content type for token read
+    const configuration = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    //make request
+    const { data } = await axios.put(
+      `/api/users/profile`,
+      user,
+      configuration
+    );
+
+    //dispatch success
+    dispatch({
+      type: USER_UPDATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_UPDATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

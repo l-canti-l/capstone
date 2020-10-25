@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { Button, Form, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 
-import { getDetails } from "../actions/userActions";
+import { getDetails, updateUser } from "../actions/userActions";
 
-function Profile({ location, history }) {
+function Profile({ history }) {
   //set initial state: name, update function
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -22,6 +21,9 @@ function Profile({ location, history }) {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+  
+  const userUpdate = useSelector((state) => state.userUpdate);
+  const { success } = userUpdate;
 
   //redirect if logged in
   useEffect(() => {
@@ -41,10 +43,10 @@ function Profile({ location, history }) {
   const submitHandler = (e) => {
     e.preventDefault();
     //dispatch register function
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       setMessage("Passwords do not match");
     } else {
-      //dispatch update profile
+      dispatch(updateUser({ id: user._id, name, email, password }))
     }
   };
 
@@ -54,6 +56,7 @@ function Profile({ location, history }) {
         <h1>Profile</h1>
         {message && <Message variant="danger">{message}</Message>}
         {error && <Message variant="danger">{error}</Message>}
+        {success && <Message variant="info">Updated Profile</Message>}
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="name">

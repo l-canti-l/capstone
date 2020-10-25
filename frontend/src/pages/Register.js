@@ -33,7 +33,7 @@ function Register({ location, history }) {
   const submitHandler = (e) => {
     e.preventDefault();
     //dispatch register function
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       setMessage("Passwords do not match");
     } else {
       dispatch(register(name, email, password));
