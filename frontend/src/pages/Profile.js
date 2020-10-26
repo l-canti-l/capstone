@@ -5,6 +5,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 
 import { getDetails, updateUser } from "../actions/userActions";
+import { USER_UPDATE_RESET } from "../actions/types";
 
 function Profile({ history }) {
   //set initial state: name, update function
@@ -21,7 +22,7 @@ function Profile({ history }) {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-  
+
   const userUpdate = useSelector((state) => state.userUpdate);
   const { success } = userUpdate;
 
@@ -30,14 +31,15 @@ function Profile({ history }) {
     if (!userInfo) {
       history.push("/login");
     } else {
-      if (!user.name) {
+      if (!user.name || success) {
+        dispatch({ type: USER_UPDATE_RESET });
         dispatch(getDetails("profile"));
       } else {
         setName(user.name);
         setEmail(user.email);
       }
     }
-  }, [dispatch, history, userInfo, user]);
+  }, [dispatch, history, userInfo, user, success]);
 
   //dispatch login
   const submitHandler = (e) => {
@@ -46,7 +48,8 @@ function Profile({ history }) {
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");
     } else {
-      dispatch(updateUser({ id: user._id, name, email, password }))
+      if (window.confirm('Do you want to save changes?') == true)
+      dispatch(updateUser({ id: user._id, name, email, password }));
     }
   };
 

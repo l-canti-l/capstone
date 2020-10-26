@@ -12,6 +12,7 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
+  USER_UPDATE_RESET,
 } from "../actions/types";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -75,12 +76,14 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
         loading: false,
         error: action.payload,
       };
+    case USER_LOGOUT:
+      return { user: {} };
     default:
       return state;
   }
 };
 
-export const userUpdateReducer = (state = { }, action) => {
+export const userUpdateReducer = (state = {}, action) => {
   switch (action.type) {
     case USER_UPDATE_REQUEST:
       return {
@@ -90,13 +93,15 @@ export const userUpdateReducer = (state = { }, action) => {
       return {
         loading: false,
         userInfo: action.payload,
-        success: true
+        success: true,
       };
     case USER_UPDATE_FAIL:
       return {
         loading: false,
         error: action.payload,
       };
+    case USER_UPDATE_RESET:
+      return {};
     default:
       return state;
   }
