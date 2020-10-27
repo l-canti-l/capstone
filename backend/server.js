@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import productsRoutes from './routes/productsRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
 import { notFound, handler } from './middleware/errorMiddleware.js'
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.get('/', (request, response) => {
 //mount routes
 app.use('/api/products', productsRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/orders', orderRoutes)
 
 //middleware
 app.use(notFound)

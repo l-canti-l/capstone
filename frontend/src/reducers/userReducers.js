@@ -1,14 +1,14 @@
 import {
-  USER_LOGIN_REQUEST_FAIL,
+  USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
-  USER_LOGIN_REQUEST_SUCCESS,
+  USER_LOGIN_SUCCESS,
   USER_LOGOUT,
   USER_REGISTER_REQUEST,
-  USER_REGISTER_REQUEST_SUCCESS,
-  USER_REGISTER_REQUEST_FAIL,
+  USER_REGISTER_SUCCESS,
+  USER_REGISTER_FAIL,
   USER_DETAILS_REQUEST,
-  USER_DETAILS_REQUEST_SUCCESS,
-  USER_DETAILS_REQUEST_FAIL,
+  USER_DETAILS_SUCCESS,
+  USER_DETAILS_FAIL,
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
@@ -21,12 +21,12 @@ export const userLoginReducer = (state = {}, action) => {
       return {
         loading: true,
       };
-    case USER_LOGIN_REQUEST_SUCCESS:
+    case USER_LOGIN_SUCCESS:
       return {
         loading: false,
         userInfo: action.payload,
       };
-    case USER_LOGIN_REQUEST_FAIL:
+    case USER_LOGIN_FAIL:
       return {
         loading: false,
         error: action.payload,
@@ -44,12 +44,12 @@ export const userRegisterReducer = (state = {}, action) => {
       return {
         loading: true,
       };
-    case USER_REGISTER_REQUEST_SUCCESS:
+    case USER_REGISTER_SUCCESS:
       return {
         loading: false,
         userInfo: action.payload,
       };
-    case USER_REGISTER_REQUEST_FAIL:
+    case USER_REGISTER_FAIL:
       return {
         loading: false,
         error: action.payload,
@@ -66,12 +66,12 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
         ...state,
         loading: true,
       };
-    case USER_DETAILS_REQUEST_SUCCESS:
+    case USER_DETAILS_SUCCESS:
       return {
         loading: false,
         user: action.payload,
       };
-    case USER_DETAILS_REQUEST_FAIL:
+    case USER_DETAILS_FAIL:
       return {
         loading: false,
         error: action.payload,
