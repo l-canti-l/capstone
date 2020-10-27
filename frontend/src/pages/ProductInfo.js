@@ -47,7 +47,7 @@ function ProductInfo({ match, history }) {
           <Row className="justify-content-center">
             <Col md={3}>
               <ListGroup variant="flush">
-                <ListGroup.Item variant="info" className="product-page-title no-effect">
+                <ListGroup.Item variant="info" className="product-page-title">
                   <h5>
                     <u>{product.name}</u>
                   </h5>
