@@ -48,7 +48,7 @@ function Profile({ history }) {
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");
     } else {
-      if (window.confirm('Do you want to save changes?') == true)
+      if (window.confirm('Do you want to save changes?') === true)
       dispatch(updateUser({ id: user._id, name, email, password }));
     }
   };

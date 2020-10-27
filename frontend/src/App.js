@@ -9,6 +9,7 @@ import Cart from './pages/Cart';
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from './pages/Profile';
+import Shipping from './pages/Shipping';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path='/cart/:id?' component={Cart} />
           <Route path='/register' component={Register} />
           <Route path='/profile' component={Profile} />
+          <Route path='/shipping' component={Shipping} />
         </Container>
       </main>
       <Footer />

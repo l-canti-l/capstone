@@ -2,6 +2,11 @@ main {
     min-height: 80vh;
 }
 
+/* body {
+    font-family: 'Metal Mania', cursive !important;
+    font-size: 18px !important;
+} */
+
 
 .card .price {
     color: salmon;
