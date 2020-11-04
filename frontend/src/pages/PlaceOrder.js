@@ -1,28 +1,56 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Checkout from "../components/Checkout";
 import { Link } from "react-router-dom";
+import { createOrder } from "../actions/orderActions";
 
-function PlaceOrder() {
+function PlaceOrder({ history }) {
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
-
 
   //prices
   //add zeros
   const decimals = (number) => {
-      return (Math.round(number * 100) / 100).toFixed(2)
-  }
+    return (Math.round(number * 100) / 100).toFixed(2);
+  };
   //calculate all prices
-  cart.itemsPrice = decimals(cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0))
-  cart.shippingPrice = decimals(cart.itemsPrice > 100 ? 0 : 5)
-  cart.taxPrice = decimals(Number((0.0625 * cart.itemsPrice).toFixed(2)))
-  cart.totalPrice = decimals((Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)).toFixed(2))
+  cart.itemsPrice = decimals(
+    cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+  );
+  cart.shippingPrice = decimals(cart.itemsPrice > 100 ? 0 : 5);
+  cart.taxPrice = decimals(Number((0.0625 * cart.itemsPrice).toFixed(2)));
+  cart.totalPrice = decimals(
+    (
+      Number(cart.itemsPrice) +
+      Number(cart.shippingPrice) +
+      Number(cart.taxPrice)
+    ).toFixed(2)
+  );
+
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { order, success, error } = orderCreate;
+
+  useEffect(() => {
+    if (success) {
+      history.push(`/order/${order._id}`);
+    }
+  }, [history, success]);
 
   const placeOrderHandler = () => {
-      console.log('order')
-  }
+    dispatch(
+      createOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        totalPrice: cart.totalPrice,
+      })
+    );
+  };
   return (
     <div>
       <Checkout stepOne stepTwo stepThree stepFour />
@@ -91,14 +119,14 @@ function PlaceOrder() {
                   <Col>${cart.shippingPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              
+
               <ListGroup.Item>
                 <Row>
                   <Col>Tax</Col>
                   <Col>${cart.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              
+
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
@@ -106,7 +134,17 @@ function PlaceOrder() {
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
-                <Button type='button' className='btn-block' disabled={cart.cartItems===0} onClick={placeOrderHandler}>Place Order</Button>
+                {error && <Message variant="danger">{error}</Message>}
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Button
+                  type="button"
+                  className="btn-block"
+                  disabled={cart.cartItems === 0}
+                  onClick={placeOrderHandler}
+                >
+                  Place Order
+                </Button>
               </ListGroup.Item>
             </ListGroup>
           </Card>
