@@ -13,6 +13,8 @@ import Shipping from './pages/Shipping';
 import PaymentMethod from './pages/PaymentMethod';
 import PlaceOrder from './pages/PlaceOrder';
 import Order from './pages/Order';
+import UserList from './pages/userList';
+import UserEdit from './pages/UserEdit';
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
           <Route path='/payment' component={PaymentMethod} />
           <Route path='/placeOrder' component={PlaceOrder} />
           <Route path='/order/:id' component={Order} />
+          <Route path='/admin/userlist' component={UserList} />
+          <Route path='/admin/user/:id/edit' component={UserEdit} />
         </Container>
       </main>
       <Footer />

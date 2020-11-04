@@ -1,4 +1,4 @@
-import { ORDER_CREATE_REQUEST, ORDER_CREATE_SUCCESS, ORDER_CREATE_FAIL, ORDER_DETAILS_FAIL, ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS, ORDER_PAID_REQUEST, ORDER_PAID_SUCCESS, ORDER_PAID_FAIL, ORDER_PAID_RESET } from '../actions/types';
+import { ORDER_CREATE_REQUEST, ORDER_CREATE_SUCCESS, ORDER_CREATE_FAIL, ORDER_DETAILS_FAIL, ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS, ORDER_PAID_REQUEST, ORDER_PAID_SUCCESS, ORDER_PAID_FAIL, ORDER_PAID_RESET, MY_ORDER_LIST_REQUEST, MY_ORDER_LIST_SUCCESS, MY_ORDER_LIST_FAIL, USER_LOGOUT } from '../actions/types';
 
 export const orderCreateReducer = (state = {}, action) => {
     switch (action.type) {
@@ -64,6 +64,31 @@ export const orderPaidReducer = (state = { }, action) => {
             return {
                 
             }      
+        default:
+            return state
+    }
+}
+
+export const myOrderListReducer = (state = { orders: [] }, action) => {
+    switch (action.type) {
+        case MY_ORDER_LIST_REQUEST:
+            return {
+                loading: true
+            }
+        case MY_ORDER_LIST_SUCCESS:
+            return {
+                loading: false,
+                orders: action.payload
+            }
+        case MY_ORDER_LIST_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+        case USER_LOGOUT:
+            return {
+                orders: []
+            }
         default:
             return state
     }

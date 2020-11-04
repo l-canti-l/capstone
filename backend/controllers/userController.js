@@ -99,4 +99,60 @@ const updateProfile = asyncHandler(async (request, response) => {
   }
 });
 
-export { authenticateUser, getProfile, registerUser, updateProfile };
+//get all users GET /api/users, private, ADMIN
+const getUsers = asyncHandler(async (request, response) => {
+  const users = await User.find({});
+
+  response.json(users)
+});
+
+//delete user DELETE /api/users/:id, private ADMIN
+const deleteUser = asyncHandler(async (request, response) => {
+  const user = await User.findById(request.params.id);
+
+  if(user) {
+    await user.remove()
+    response.json({message: 'User has been eliminated'})
+  } else {
+    res.status(404)
+    throw new Error('User not found')
+  }
+})
+
+//get user by ID, GET /api/users/:id, private ADMIN ( for edidting)
+const getUserById = asyncHandler(async (request, response) => {
+  const user = await User.findById(request.params.id).select('-password')
+  if(user) {
+    response.json(user)
+  } else {
+    res.status(404)
+    throw new Error('User not found')
+  }
+})
+
+//update profile PUT to api/users/:id, private ADMIN
+const updateUser = asyncHandler(async (request, response) => {
+  const user = await User.findById(request.params.id);
+  //update user
+  if (user) {
+    user.name = request.body.name || user.name
+    user.email = request.body.email || user.email
+    user.isAdmin = request.body.isAdmin
+
+    //savve update
+    const updatedUser = await user.save()
+    //set update
+    response.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+    })
+
+  } else {
+    response.status(404);
+    throw new Error("user not found");
+  }
+});
+
+export { updateUser, authenticateUser, getProfile, registerUser, updateProfile, getUsers, deleteUser, getUserById };

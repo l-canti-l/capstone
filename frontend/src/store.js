@@ -11,8 +11,16 @@ import {
   userLoginReducer,
   userRegisterReducer,
   userUpdateReducer,
+  userListReducer,
+  userDeleteReducer,
+  adminUserUpdateReducer
 } from "./reducers/userReducers";
-import { orderCreateReducer, orderDetailsReducer, orderPaidReducer } from './reducers/orderReducers'
+import {
+  myOrderListReducer,
+  orderCreateReducer,
+  orderDetailsReducer,
+  orderPaidReducer,
+} from "./reducers/orderReducers";
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -24,7 +32,11 @@ const reducer = combineReducers({
   userUpdate: userUpdateReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
-  orderPaid: orderPaidReducer
+  orderPaid: orderPaidReducer,
+  myOrderList: myOrderListReducer,
+  userList: userListReducer,
+  userDelete: userDeleteReducer,
+  adminUserUpdate: adminUserUpdateReducer,
 });
 
 //get data from local

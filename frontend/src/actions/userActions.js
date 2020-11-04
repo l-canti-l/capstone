@@ -12,6 +12,15 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
+  USER_LIST_SUCCESS,
+  USER_LIST_REQUEST,
+  USER_LIST_FAIL,
+  USER_DELETE_FAIL,
+  USER_DELETE_SUCCESS,
+  USER_DELETE_REQUEST,
+  ADMIN_USER_UPDATE_REQUEST,
+  ADMIN_USER_UPDATE_SUCCESS,
+  ADMIN_USER_UPDATE_FAIL,
 } from "./types";
 import axios from "axios";
 
@@ -176,6 +185,121 @@ export const updateUser = (user) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const listUsers = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_LIST_REQUEST,
+    });
+    //get info for token from state
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    //check if header has correct content type for token read
+    const configuration = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    //make request
+    const { data } = await axios.get(
+      `/api/users`,
+      configuration
+    );
+
+    //dispatch success
+    dispatch({
+      type: USER_LIST_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: USER_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const deleteUser = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_DELETE_REQUEST,
+    });
+    //get info for token from state
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    //check if header has correct content type for token read
+    const configuration = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    //make request
+    await axios.delete(
+      `/api/users/${id}`,
+      configuration
+    );
+
+    //dispatch success
+    dispatch({
+      type: USER_DELETE_SUCCESS,
+    })
+  } catch (error) {
+    dispatch({
+      type: USER_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const adminUpdateUser = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ADMIN_USER_UPDATE_REQUEST,
+    });
+    //get info for token from state
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    //check if header has correct content type for token read
+    const configuration = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    //make request
+    const { data } = await axios.put(
+      `/api/users/${user._id}`,
+      user,
+      configuration
+    );
+
+    //dispatch success
+    dispatch({
+      type: ADMIN_USER_UPDATE_SUCCESS,
+    })
+    dispatch({
+      type: USER_DETAILS_SUCCESS,
+      payload: data
+    })
+  } catch (error) {
+    dispatch({
+      type: ADMIN_USER_UPDATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
