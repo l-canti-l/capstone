@@ -58,7 +58,7 @@ function PlaceOrder({ history }) {
         <Col md={8} sm={8}>
           <ListGroup variant="flush">
             <ListGroup.Item>
-              <h3>Shipping</h3>
+              <h3><u>Shipping</u></h3>
               <p>
                 <strong>Address: </strong>
                 {cart.shippingAddress.address}, {cart.shippingAddress.city},{" "}
@@ -68,19 +68,19 @@ function PlaceOrder({ history }) {
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h3>Payment</h3>
+              <h3><u>Payment</u></h3>
               <strong>Method: </strong>
               {cart.paymentMethod}
             </ListGroup.Item>
 
             <ListGroup.Item>
-              <h3>Items in Cart</h3>
+              <h3><u>Items in Cart</u></h3>
               {cart.cartItems.length === 0 ? (
                 <Message>Yr Cart is Empty</Message>
               ) : (
                 <ListGroup variant="flush">
                   {cart.cartItems.map((item, index) => (
-                    <Row>
+                    <Row className='my-3' key={item._id}>
                       <Col md={2} sm={2}>
                         <Image src={item.image} alt={item.name} fluid />
                       </Col>
@@ -103,7 +103,7 @@ function PlaceOrder({ history }) {
           <Card>
             <ListGroup variant="flush">
               <ListGroup.Item>
-                <h5>Order Summary</h5>
+                <h5><u>Order Summary</u></h5>
               </ListGroup.Item>
 
               <ListGroup.Item>

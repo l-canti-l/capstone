@@ -25,6 +25,11 @@ app.use('/api/products', productsRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
 
+//paypal
+app.get('/api/config/paypal', (request, response) =>
+response.send(process.env.PAYPAL_CLIENT_ID)
+)
+
 //middleware
 app.use(notFound)
 app.use(handler)

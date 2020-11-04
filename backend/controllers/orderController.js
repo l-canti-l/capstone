@@ -16,7 +16,6 @@ const addOrderItems = asyncHandler(async (request, response) => {
   if (orderItems && orderItems.length === 0) {
     response.status(400);
     throw new Error("No items in order");
-    return;
   } else {
     const order = new Order({
       user: request.user._id,
@@ -48,5 +47,26 @@ const getOrderById = asyncHandler(async (request, response) => {
     throw new Error("Order not found");
   }
 });
+//update order to indicate a payment, GET api/orders/:id/paid
+const updateOrderToPaid = asyncHandler(async (request, response) => {
+  //fetch order, and use populate to get name and email
+  const order = await Order.findById(request.params.id);
+  //check for order and if an order exists respond with order
+  if (order) {
+    order.isPaid = true,
+    order.paidAt = Date.now(),
+    order.paymentResult = {
+        id: request.body.id,
+        status: request.body.status,
+        update_time: request.body.update_time,
+        email_address: request.body.payer.email_address,
+      }
+    const updatedOrder = await order.save();
+    response.json(updatedOrder)
+  } else {
+    response.status(404);
+    throw new Error("Order not found");
+  }
+});
 
-export { addOrderItems, getOrderById };
+export { addOrderItems, getOrderById, updateOrderToPaid };
