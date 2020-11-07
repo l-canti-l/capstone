@@ -20,5 +20,18 @@ const getProductById = asyncHandler(async (request, response) => {
       throw new Error("Product does not exist");
     }
 })
+//delete product by id, /api/products/:id private/ADMIN
+const deleteProductById = asyncHandler(async (request, response) => {
+    const product = await Product.findById(request.params.id);
 
-export { getProducts, getProductById }
+    //check if product exists
+    if (product) {
+      await product.remove()
+      response.json({message: 'That shit sucked anyway'})
+    } else {
+      response.status(404);
+      throw new Error("Product does not exist");
+    }
+})
+
+export { getProducts, getProductById, deleteProductById }

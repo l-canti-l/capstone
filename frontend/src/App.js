@@ -15,6 +15,7 @@ import PlaceOrder from './pages/PlaceOrder';
 import Order from './pages/Order';
 import UserList from './pages/userList';
 import UserEdit from './pages/UserEdit';
+import ProductList from "./pages/ProductList";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path='/placeOrder' component={PlaceOrder} />
           <Route path='/order/:id' component={Order} />
           <Route path='/admin/userlist' component={UserList} />
+          <Route path='/admin/productlist' component={ProductList} />
           <Route path='/admin/user/:id/edit' component={UserEdit} />
         </Container>
       </main>

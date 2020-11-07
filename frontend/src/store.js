@@ -4,6 +4,7 @@ import thunk from "redux-thunk";
 import {
   productListReducer,
   productInfoReducer,
+  productDeleteReducer,
 } from "./reducers/productReducers.js";
 import { cartReducer } from "./reducers/cartReducer";
 import {
@@ -37,6 +38,7 @@ const reducer = combineReducers({
   userList: userListReducer,
   userDelete: userDeleteReducer,
   adminUserUpdate: adminUserUpdateReducer,
+  productDelete: productDeleteReducer
 });
 
 //get data from local
