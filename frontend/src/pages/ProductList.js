@@ -69,6 +69,7 @@ function ProductList({ history, match }) {
                 <th>PRICE</th>
                 <th>CATEGORY</th>
                 <th>BRAND</th>
+                <th>COUNT IN STOCK</th>
                 <th>EDIT/DELETE</th>
               </tr>
             </thead>
@@ -80,6 +81,7 @@ function ProductList({ history, match }) {
                   <td>${product.price}</td>
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
+                  <td>{product.countInStock}</td>
                   <td>
                     <LinkContainer to={`/admin/product/${product._id}/edit`}>
                       <Button variant="info" className="btn-sm">

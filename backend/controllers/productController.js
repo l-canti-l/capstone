@@ -38,15 +38,15 @@ const deleteProductById = asyncHandler(async (request, response) => {
 const createProduct = asyncHandler(async (request, response) => {
   //declare new product with sample data
   const product = new Product({
-    name: "Sample",
+    name: "New Product",
     price: 0,
     user: request.user._id,
     image: "/images/sample.bmp",
-    brand: "Corpselyf",
-    category: "Digital Print",
+    brand: "Brand Here",
+    category: "Category Here",
     countInStock: 0,
     numReviews: 0,
-    description: "none",
+    description: "Description Here",
   });
   //save product
   const createdProduct = await product.save();
