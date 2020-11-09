@@ -5,6 +5,7 @@ import Message from "../components/Message";
 import Checkout from "../components/Checkout";
 import { Link } from "react-router-dom";
 import { createOrder } from "../actions/orderActions";
+import { ORDER_CREATE_RESET } from "../actions/types";
 
 function PlaceOrder({ history }) {
   const dispatch = useDispatch();
@@ -35,7 +36,9 @@ function PlaceOrder({ history }) {
   useEffect(() => {
     if (success) {
       history.push(`/order/${order._id}`);
+      dispatch({ type: ORDER_CREATE_RESET })
     }
+    // eslint-disable-next-line
   }, [history, success]);
 
   const placeOrderHandler = () => {

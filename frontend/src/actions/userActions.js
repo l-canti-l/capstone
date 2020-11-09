@@ -65,7 +65,11 @@ export const login = (email, password) => async (dispatch) => {
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem("userInfo");
+  localStorage.removeItem("cartItems");
+  localStorage.removeItem("shippingAddress");
+  localStorage.removeItem("paymentMethod");
   dispatch({ type: USER_LOGOUT });
+  document.location.href = '/login'
 };
 
 export const register = (name, email, password) => async (dispatch) => {
@@ -127,10 +131,7 @@ export const getDetails = (id) => async (dispatch, getState) => {
       },
     };
     //make request
-    const { data } = await axios.get(
-      `/api/users/${id}`,
-      configuration
-    );
+    const { data } = await axios.get(`/api/users/${id}`, configuration);
 
     //dispatch success
     dispatch({
@@ -165,11 +166,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
       },
     };
     //make request
-    const { data } = await axios.put(
-      `/api/users/profile`,
-      user,
-      configuration
-    );
+    const { data } = await axios.put(`/api/users/profile`, user, configuration);
 
     //dispatch success
     dispatch({
@@ -180,8 +177,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
       type: USER_LOGIN_SUCCESS,
       payload: data,
     });
-    localStorage.setItem('userInfo', JSON.stringify(data))
-
+    localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: USER_UPDATE_FAIL,
@@ -209,16 +205,13 @@ export const listUsers = (user) => async (dispatch, getState) => {
       },
     };
     //make request
-    const { data } = await axios.get(
-      `/api/users`,
-      configuration
-    );
+    const { data } = await axios.get(`/api/users`, configuration);
 
     //dispatch success
     dispatch({
       type: USER_LIST_SUCCESS,
       payload: data,
-    })
+    });
   } catch (error) {
     dispatch({
       type: USER_LIST_FAIL,
@@ -246,15 +239,12 @@ export const deleteUser = (id) => async (dispatch, getState) => {
       },
     };
     //make request
-    await axios.delete(
-      `/api/users/${id}`,
-      configuration
-    );
+    await axios.delete(`/api/users/${id}`, configuration);
 
     //dispatch success
     dispatch({
       type: USER_DELETE_SUCCESS,
-    })
+    });
   } catch (error) {
     dispatch({
       type: USER_DELETE_FAIL,
@@ -278,7 +268,7 @@ export const adminUpdateUser = (user) => async (dispatch, getState) => {
     //check if header has correct content type for token read
     const configuration = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
@@ -292,11 +282,11 @@ export const adminUpdateUser = (user) => async (dispatch, getState) => {
     //dispatch success
     dispatch({
       type: ADMIN_USER_UPDATE_SUCCESS,
-    })
+    });
     dispatch({
       type: USER_DETAILS_SUCCESS,
-      payload: data
-    })
+      payload: data,
+    });
   } catch (error) {
     dispatch({
       type: ADMIN_USER_UPDATE_FAIL,

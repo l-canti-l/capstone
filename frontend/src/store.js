@@ -5,6 +5,7 @@ import {
   productListReducer,
   productInfoReducer,
   productDeleteReducer,
+  productCreateReducer,
 } from "./reducers/productReducers.js";
 import { cartReducer } from "./reducers/cartReducer";
 import {
@@ -38,7 +39,8 @@ const reducer = combineReducers({
   userList: userListReducer,
   userDelete: userDeleteReducer,
   adminUserUpdate: adminUserUpdateReducer,
-  productDelete: productDeleteReducer
+  productDelete: productDeleteReducer,
+  productCreate: productCreateReducer
 });
 
 //get data from local

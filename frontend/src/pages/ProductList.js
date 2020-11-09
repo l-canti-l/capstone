@@ -4,7 +4,8 @@ import { Button, Table, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { listProducts, deleteProduct } from "../actions/products";
+import { listProducts, deleteProduct, createProduct } from "../actions/products";
+import { PRODUCT_CREATE_RESET } from '../actions/types';
 
 function ProductList({ history, match }) {
   const dispatch = useDispatch();
@@ -13,27 +14,34 @@ function ProductList({ history, match }) {
   const { loading, error, products } = productList;
   
   const productDelete = useSelector((state) => state.productDelete);
-  const { loading:loadingDelete, error:errorDelete, success } = productDelete;
+  const { loading:loadingDelete, error:errorDelete, success:successDelete } = productDelete;
+  
+  const productCreate = useSelector((state) => state.productCreate);
+  const { loading:loadingCreate, error:errorCreate, success:successCreate, product:createdProduct } = productCreate;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
   useEffect(() => {
+    dispatch({ type: PRODUCT_CREATE_RESET })
     //is admin?
-    if (userInfo && userInfo.isAdmin) {
-      dispatch(listProducts());
+    if (!userInfo || !userInfo.isAdmin) {
+      history.push('/login')
+    } 
+    if(successCreate) {
+      history.push(`/admin/product/${createdProduct._id}/edit`)
     } else {
-      history.push("/login");
+      dispatch(listProducts());
     }
-  }, [dispatch, history, userInfo, success]);
+  }, [dispatch, history, userInfo, successDelete, successCreate, createdProduct]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure?")) {
       dispatch(deleteProduct(id));
     }
   };
-  const createProductHandler = (product) => {
-    console.log("hello");
+  const createProductHandler = () => {
+    dispatch(createProduct())
   };
 
   return (
@@ -45,6 +53,8 @@ function ProductList({ history, match }) {
       </Row>
       {loadingDelete && <Loader />}
       {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
+      {loadingCreate && <Loader />}
+      {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
       {loading ? (
         <Loader />
       ) : error ? (
@@ -90,7 +100,7 @@ function ProductList({ history, match }) {
           </Table>
           <Row className='justify-content-center'>
             <Button className="my-3" variant='info' onClick={createProductHandler}>
-            <i class="fas fa-burn"></i> Create Product
+            <i className="fas fa-burn"></i> Create Product
             </Button>
           </Row>
         </div>
