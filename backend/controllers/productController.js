@@ -86,4 +86,50 @@ const updateProduct = asyncHandler(async (request, response) => {
   }
 });
 
-export { getProducts, getProductById, deleteProductById, createProduct, updateProduct };
+//create new review, POST to /api/products/:id/review private
+const createReview = asyncHandler(async (request, response) => {
+  //get details from request body
+  const { rating, comment } = request.body;
+  //find product
+  const product = await Product.findById(request.params.id);
+
+  if (product) {
+    //check to see if user already submitted review, logged user vs current user
+    const reviewed = product.reviews.find(
+      (rev) => rev.user.toString() === request.user._id.toString()
+    );
+    if (reviewed) {
+      response.status(400);
+      throw new Error("Youve already given your input");
+    }
+    //if no review
+    const review = {
+      name: request.user.name,
+      rating: Number(rating),
+      comment,
+      user: request.user._id,
+    };
+    //add review
+    product.reviews.push(review);
+    product.numReviews = product.reviews.length;
+    //overall rating
+    product.rating =
+      product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+      product.reviews.length;
+    //save review to product
+    await product.save();
+    response.status(201).json({ message: "Review has been added" });
+  } else {
+    response.status(404);
+    throw new Error("No such product");
+  }
+});
+
+export {
+  getProducts,
+  getProductById,
+  deleteProductById,
+  createProduct,
+  updateProduct,
+  createReview
+};

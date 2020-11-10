@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
     );
   },
 });
-//check file type thanks stack overflow
+//check file type
 function checkFileType(file, cb) {
   const filetypes = /jpg|jpeg|png|bmp/;
   const extenstionName = filetypes.test(
