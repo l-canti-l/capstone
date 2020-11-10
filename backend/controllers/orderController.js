@@ -69,6 +69,23 @@ const updateOrderToPaid = asyncHandler(async (request, response) => {
   }
 });
 
+//update order to indicate a out for delivery, PUT api/orders/:id/delivered, private/admin
+const updateOrderToDelivered= asyncHandler(async (request, response) => {
+  //fetch order, and use populate to get name and email
+  const order = await Order.findById(request.params.id);
+  //check for order and if an order exists respond with order
+  if (order) {
+    order.isDelivered = true,
+    order.deliveredAt = Date.now()
+    
+    const updatedOrder = await order.save();
+    response.json(updatedOrder)
+  } else {
+    response.status(404);
+    throw new Error("Order not found");
+  }
+});
+
 //get orders of logged in user, GET api/orders/myorders, private
 const getUsersOrders = asyncHandler(async (request, response) => {
   //fetch orders of logged in user
@@ -82,4 +99,4 @@ const getOrders = asyncHandler(async (request, response) => {
   response.json(orders)
 });
 
-export { addOrderItems, getOrderById, updateOrderToPaid, getUsersOrders, getOrders };
+export { addOrderItems, getOrderById, updateOrderToPaid, getUsersOrders, getOrders, updateOrderToDelivered };

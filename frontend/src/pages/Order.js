@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
+import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { Link } from "react-router-dom";
-import { getOrderDetails, payOrder } from "../actions/orderActions";
+import { getOrderDetails, payOrder, deliverOrder } from "../actions/orderActions";
 import axios from "axios";
 import { PayPalButton } from "react-paypal-button-v2";
-import { ORDER_PAID_RESET } from "../actions/types";
+import { ORDER_PAID_RESET, ORDER_DELIVERED_RESET } from "../actions/types";
 
-function Order({ match }) {
+function Order({ match, history }) {
   const dispatch = useDispatch();
 
   const orderId = match.params.id;
@@ -23,6 +23,13 @@ function Order({ match }) {
   const orderPaid = useSelector((state) => state.orderPaid);
   //rename success and loading because already used
   const { success: successPay, loading: loadingPay } = orderPaid;
+  
+  const orderDelivered = useSelector((state) => state.orderDelivered);
+  //rename success and loading because already used
+  const { success: successDelivered, loading: loadingDelivered, error: errorDelivered } = orderDelivered;
+  
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   if (!loading) {
     const decimals = (number) => {
@@ -44,6 +51,9 @@ function Order({ match }) {
   }
   //check if order exists or that the _id matches URL id, if not GET most recent order
   useEffect(() => {
+    if(!userInfo) {
+      history.push('/login')
+    }
     //build paypal script when page loads
     const addPayPalSDK = async () => {
       //fetch id
@@ -63,9 +73,10 @@ function Order({ match }) {
       document.body.appendChild(script);
     };
 
-    if (!order || successPay || order._id !== orderId) {
+    if (!order || successPay || successDelivered || order._id !== orderId) {
       //prevent refresh loop
       dispatch({ type: ORDER_PAID_RESET });
+      dispatch({ type: ORDER_DELIVERED_RESET });
       dispatch(getOrderDetails(orderId));
       //else if the order is not paid
     } else if (!order.isPaid) {
@@ -77,12 +88,16 @@ function Order({ match }) {
         setSdkReady(true);
       }
     }
-  }, [dispatch, order, orderId, successPay]);
+  }, [dispatch, order, orderId, successPay, successDelivered, history, userInfo]);
 
   const successfulPaymentHandler = (paymentResult) => {
     console.log(paymentResult)
     dispatch(payOrder(orderId, paymentResult));
   };
+
+  const deliverHandler = () => {
+    dispatch(deliverOrder(order))
+  }
 
   return loading ? (
     <Loader />
@@ -220,6 +235,16 @@ function Order({ match }) {
                       style={{ color: "blue" }}
                     />
                   )}
+                </ListGroup.Item>
+              )}
+              {loadingDelivered && <Loader />}
+              {errorDelivered && <Message variant='danger'>{errorDelivered}</Message>}
+              {/* is admin and paid for delivery */}
+              {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                <ListGroup.Item>
+                  <Button type='button' className='btn btn-block' onClick={deliverHandler}>
+                    Mark as Delivered
+                  </Button>
                 </ListGroup.Item>
               )}
             </ListGroup>
