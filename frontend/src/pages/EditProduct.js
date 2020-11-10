@@ -6,9 +6,11 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormWrapper from "../components/FormWrapper";
 import { listProductInfo, updateProduct } from "../actions/products";
-import { PRODUCT_INFO_REQUEST_RESET, PRODUCT_UPDATE_RESET } from "../actions/types";
-
-
+import {
+  PRODUCT_INFO_REQUEST_RESET,
+  PRODUCT_UPDATE_RESET,
+} from "../actions/types";
+import axios from "axios";
 
 function ProductEdit({ match, history }) {
   //get product id
@@ -16,27 +18,36 @@ function ProductEdit({ match, history }) {
   //set initial state: name, update function
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
-  const [image, setImage] = useState('');
-  const [brand, setBrand] = useState('');
-  const [category, setCategory] = useState('');
+  const [image, setImage] = useState("");
+  const [brand, setBrand] = useState("");
+  const [category, setCategory] = useState("");
   const [countInStock, setCountInStock] = useState(0);
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState("");
+
+  const [uploading, setUploading] = useState(false);
 
   const dispatch = useDispatch();
   //get login from state
   const productInfo = useSelector((state) => state.productInfo);
   const { loading, error, product } = productInfo;
-  
+
   const productUpdate = useSelector((state) => state.productUpdate);
-  const { loading:updateLoading, error:updateError, success:updateSuccess } = productUpdate;
+  const {
+    loading: updateLoading,
+    error: updateError,
+    success: updateSuccess,
+  } = productUpdate;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   useEffect(() => {
-    if(updateSuccess) {
-      dispatch({type: PRODUCT_UPDATE_RESET})
-      dispatch({type: PRODUCT_INFO_REQUEST_RESET})
-      history.push('/admin/productlist')
-    } else 
-     { if (!product.name || product._id !== productId) {
+    if (updateSuccess) {
+      dispatch({ type: PRODUCT_UPDATE_RESET });
+      dispatch({ type: PRODUCT_INFO_REQUEST_RESET });
+      history.push("/admin/productlist");
+    } else {
+      if (!product.name || product._id !== productId) {
         dispatch(listProductInfo(productId));
       } else {
         setName(product.name);
@@ -46,22 +57,50 @@ function ProductEdit({ match, history }) {
         setCategory(product.category);
         setCountInStock(product.countInStock);
         setDescription(product.description);
-      }}
-  }, [ dispatch, history, product, productId, updateSuccess ]);
+      }
+    }
+  }, [dispatch, history, product, productId, updateSuccess]);
 
-  //dispatch login
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(updateProduct({
-      _id: productId,
-      name,
-      price,
-      image,
-      brand,
-      category,
-      countInStock,
-      description
-    }))
+    dispatch(
+      updateProduct({
+        _id: productId,
+        name,
+        price,
+        image,
+        brand,
+        category,
+        countInStock,
+        description,
+      })
+    );
+  };
+
+  const uploadHandler = async (e) => {
+    //array of files to be uploaded
+    const file = e.target.files[0];
+
+    const formData = new FormData();
+    formData.append("image", file);
+    setUploading(true);
+    //make request
+    try {
+      //auth stuff
+      const configuration = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      const { data } = await axios.post("/api/upload", formData, configuration);
+      setImage(data);
+      console.log(data)
+      setUploading(false);
+    } catch (error) {
+      setUploading(false);
+      window.alert(error);
+    }
   };
 
   return (
@@ -72,7 +111,7 @@ function ProductEdit({ match, history }) {
       <FormWrapper>
         <h1>Edit Product</h1>
         {updateLoading && <Loader />}
-        {updateError && <Message variant='danger'>{error}</Message>}
+        {updateError && <Message variant="danger">{error}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (
@@ -88,7 +127,7 @@ function ProductEdit({ match, history }) {
                 onChange={(e) => setName(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            
+
             <Form.Group controlId="price">
               <Form.Label>Price</Form.Label>
               <Form.Control
@@ -100,17 +139,23 @@ function ProductEdit({ match, history }) {
             </Form.Group>
 
             <Form.Group controlId="image">
-            <Form.Label>Image</Form.Label>
+              <Form.Label>Image</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Image URL"
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               ></Form.Control>
+              <Form.File
+                id="img-file"
+                label="Choose File to Upload"
+                onChange={uploadHandler}
+              ></Form.File>
+              {uploading && <Loader />}
             </Form.Group>
-            
+
             <Form.Group controlId="brand">
-            <Form.Label>Brand</Form.Label>
+              <Form.Label>Brand</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Brand Here"
@@ -120,7 +165,7 @@ function ProductEdit({ match, history }) {
             </Form.Group>
 
             <Form.Group controlId="category">
-            <Form.Label>Category</Form.Label>
+              <Form.Label>Category</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Category Here"
@@ -130,7 +175,7 @@ function ProductEdit({ match, history }) {
             </Form.Group>
 
             <Form.Group controlId="countInStock">
-            <Form.Label>Count in Stock</Form.Label>
+              <Form.Label>Count in Stock</Form.Label>
               <Form.Control
                 type="number"
                 placeholder="Count in stock"
@@ -138,9 +183,9 @@ function ProductEdit({ match, history }) {
                 onChange={(e) => setCountInStock(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            
+
             <Form.Group controlId="description">
-            <Form.Label>Description</Form.Label>
+              <Form.Label>Description</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Description Here"
