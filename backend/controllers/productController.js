@@ -42,11 +42,11 @@ const createProduct = asyncHandler(async (request, response) => {
     price: 0,
     user: request.user._id,
     image: "/images/sample.bmp",
-    brand: "Brand Here",
-    category: "Category Here",
+    brand: "",
+    category: "",
     countInStock: 0,
     numReviews: 0,
-    description: "Description Here",
+    description: "",
   });
   //save product
   const createdProduct = await product.save();
@@ -78,7 +78,7 @@ const updateProduct = asyncHandler(async (request, response) => {
     product.category = category;
     product.countInStock = countInStock;
     //save
-    updatedProduct = await product.save();
+    const updatedProduct = await product.save();
     response.status(201).json(updatedProduct);
   } else {
     response.status(404);

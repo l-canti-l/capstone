@@ -5,7 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormWrapper from "../components/FormWrapper";
-import { listProductInfo } from "../actions/products";
+import { listProductInfo, updateProduct } from "../actions/products";
+import { PRODUCT_INFO_REQUEST_RESET, PRODUCT_UPDATE_RESET } from "../actions/types";
+
 
 
 function ProductEdit({ match, history }) {
@@ -24,9 +26,17 @@ function ProductEdit({ match, history }) {
   //get login from state
   const productInfo = useSelector((state) => state.productInfo);
   const { loading, error, product } = productInfo;
+  
+  const productUpdate = useSelector((state) => state.productUpdate);
+  const { loading:updateLoading, error:updateError, success:updateSuccess } = productUpdate;
 
   useEffect(() => {
-      if (!product.name || product._id !== productId) {
+    if(updateSuccess) {
+      dispatch({type: PRODUCT_UPDATE_RESET})
+      dispatch({type: PRODUCT_INFO_REQUEST_RESET})
+      history.push('/admin/productlist')
+    } else 
+     { if (!product.name || product._id !== productId) {
         dispatch(listProductInfo(productId));
       } else {
         setName(product.name);
@@ -36,13 +46,22 @@ function ProductEdit({ match, history }) {
         setCategory(product.category);
         setCountInStock(product.countInStock);
         setDescription(product.description);
-      }
-  }, [ dispatch, history, product, productId, ]);
+      }}
+  }, [ dispatch, history, product, productId, updateSuccess ]);
 
   //dispatch login
   const submitHandler = (e) => {
     e.preventDefault();
-    //update
+    dispatch(updateProduct({
+      _id: productId,
+      name,
+      price,
+      image,
+      brand,
+      category,
+      countInStock,
+      description
+    }))
   };
 
   return (
@@ -52,8 +71,8 @@ function ProductEdit({ match, history }) {
       </Link>
       <FormWrapper>
         <h1>Edit Product</h1>
-        {loading && <Loader />}
-        {error && <Message variant='danger'>{error}</Message>}
+        {updateLoading && <Loader />}
+        {updateError && <Message variant='danger'>{error}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (
