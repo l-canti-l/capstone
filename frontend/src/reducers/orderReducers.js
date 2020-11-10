@@ -14,6 +14,9 @@ import {
   MY_ORDER_LIST_FAIL,
   USER_LOGOUT,
   ORDER_CREATE_RESET,
+  ORDER_LIST_REQUEST,
+  ORDER_LIST_SUCCESS,
+  ORDER_LIST_FAIL,
 } from "../actions/types";
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -107,6 +110,31 @@ export const myOrderListReducer = (state = { orders: [] }, action) => {
     case USER_LOGOUT:
       return {
         orders: [],
+      };
+    default:
+      return state;
+  }
+};
+
+export const adminOrderListReducer = (state = { adminOrders: [] }, action) => {
+  switch (action.type) {
+    case ORDER_LIST_REQUEST:
+      return {
+        loading: true,
+      };
+    case ORDER_LIST_SUCCESS:
+      return {
+        loading: false,
+        adminOrders: action.payload,
+      };
+    case ORDER_LIST_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case USER_LOGOUT:
+      return {
+        adminOrders: [],
       };
     default:
       return state;

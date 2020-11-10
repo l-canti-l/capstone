@@ -63,7 +63,7 @@ function Order({ match }) {
       document.body.appendChild(script);
     };
 
-    if (!order || successPay) {
+    if (!order || successPay || order._id !== orderId) {
       //prevent refresh loop
       dispatch({ type: ORDER_PAID_RESET });
       dispatch(getOrderDetails(orderId));

@@ -17,6 +17,7 @@ import UserList from './pages/userList';
 import UserEdit from './pages/UserEdit';
 import ProductList from "./pages/ProductList";
 import ProductEdit from "./pages/EditProduct";
+import OrderList from './pages/OrderList';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path='/placeOrder' component={PlaceOrder} />
           <Route path='/order/:id' component={Order} />
           <Route path='/admin/userlist' component={UserList} />
+          <Route path='/admin/orderlist' component={OrderList} />
           <Route path='/admin/productlist' component={ProductList} />
           <Route path='/admin/user/:id/edit' component={UserEdit} />
           <Route path='/admin/product/:id/edit' component={ProductEdit} />

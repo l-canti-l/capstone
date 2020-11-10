@@ -76,4 +76,10 @@ const getUsersOrders = asyncHandler(async (request, response) => {
   response.json(orders)
 });
 
-export { addOrderItems, getOrderById, updateOrderToPaid, getUsersOrders };
+//get orders all orders for admin, GET api/orders, private, admin
+const getOrders = asyncHandler(async (request, response) => {
+  const orders = await Order.find({}).populate('user', 'id name');
+  response.json(orders)
+});
+
+export { addOrderItems, getOrderById, updateOrderToPaid, getUsersOrders, getOrders };

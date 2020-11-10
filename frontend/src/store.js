@@ -22,6 +22,7 @@ import {
   myOrderListReducer,
   orderCreateReducer,
   orderDetailsReducer,
+  adminOrderListReducer,
   orderPaidReducer,
 } from "./reducers/orderReducers";
 
@@ -42,7 +43,8 @@ const reducer = combineReducers({
   adminUserUpdate: adminUserUpdateReducer,
   productDelete: productDeleteReducer,
   productCreate: productCreateReducer,
-  productUpdate: productUpdateReducer
+  productUpdate: productUpdateReducer,
+  adminOrderList: adminOrderListReducer
 });
 
 //get data from local
