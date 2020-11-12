@@ -6,12 +6,13 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { listProducts, deleteProduct, createProduct } from "../actions/products";
 import { PRODUCT_CREATE_RESET } from '../actions/types';
+import Pages from '../components/Pages';
 
 function ProductList({ history, match }) {
   const dispatch = useDispatch();
-
+  const pageNumber = match.params.pageNumber || 1
   const productList = useSelector((state) => state.productList);
-  const { loading, error, products } = productList;
+  const { loading, error, products, page, pages } = productList;
   
   const productDelete = useSelector((state) => state.productDelete);
   const { loading:loadingDelete, error:errorDelete, success:successDelete } = productDelete;
@@ -31,9 +32,9 @@ function ProductList({ history, match }) {
     if(successCreate) {
       history.push(`/admin/product/${createdProduct._id}/edit`)
     } else {
-      dispatch(listProducts());
+      dispatch(listProducts('', pageNumber));
     }
-  }, [dispatch, history, userInfo, successDelete, successCreate, createdProduct]);
+  }, [dispatch, history, userInfo, successDelete, successCreate, createdProduct, pageNumber]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure?")) {
@@ -105,6 +106,7 @@ function ProductList({ history, match }) {
             <i className="fas fa-burn"></i> Create Product
             </Button>
           </Row>
+          <Pages pages={pages} page={page} isAdmin={true}></Pages>
         </div>
       )}
     </div>

@@ -3,9 +3,29 @@ import Product from "../models/productModel.js";
 
 //get route for all products, /api/products
 const getProducts = asyncHandler(async (request, response) => {
-  const products = await Product.find({});
+  //page functionaliyu
+  const pageNumbers = 5;
+  const page = Number(request.query.pageNumber) || 1;
+  //seearch functionality
+  const searchTerm = request.query.searchTerm
+    ? {
+        name: {
+          //unexact results
+          $regex: request.query.searchTerm,
+          //case insensitivev
+          $options: "i",
+        },
+      }
+    : {};
+  const count = await Product.countDocuments({ ...searchTerm });
+  //tell db what to query
+  const products = await Product.find({ ...searchTerm })
+      //dont return more than there is
+    .limit(pageNumbers)
+    //skip over x products which are not shown on active page
+    .skip(pageNumbers * (page - 1));
 
-  response.json(products);
+  response.json({ products, page, pages: Math.ceil(count / pageNumbers) });
 });
 
 //get single product by id, /api/products/:id
@@ -124,6 +144,11 @@ const createReview = asyncHandler(async (request, response) => {
     throw new Error("No such product");
   }
 });
+//GET top products from /api/product/top, public
+const getTop = asyncHandler(async (request, response) => {
+  const products = await Product.find({}).sort({rating: -1}).limit(3)
+  response.json(products)
+});
 
 export {
   getProducts,
@@ -131,5 +156,6 @@ export {
   deleteProductById,
   createProduct,
   updateProduct,
-  createReview
+  createReview,
+  getTop
 };

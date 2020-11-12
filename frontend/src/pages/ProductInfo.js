@@ -91,14 +91,14 @@ function ProductInfo({ match, history }) {
                 <ListGroup>
                   <ListGroup.Item>
                     <Row>
-                      <Col className="product-page-shop-left">Price:</Col>
+                      <Col>Price:</Col>
                       <Col>${product.price}</Col>
                     </Row>
                   </ListGroup.Item>
 
                   <ListGroup.Item>
                     <Row>
-                      <Col className="product-page-shop-left">Stock:</Col>
+                      <Col>Stock:</Col>
                       <Col>
                         {product.countInStock > 0
                           ? `${product.countInStock} available`
