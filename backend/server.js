@@ -1,4 +1,4 @@
-import express from "express";
+import express, { request, response } from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import productsRoutes from "./routes/productsRoutes.js";
@@ -17,11 +17,6 @@ const app = express();
 //body parser
 app.use(express.json());
 
-//create route, is api running
-app.get("/", (request, response) => {
-  response.send("API is running......");
-});
-
 //mount routes
 app.use("/api/products", productsRoutes);
 app.use("/api/users", userRoutes);
@@ -36,6 +31,21 @@ app.get("/api/config/paypal", (request, response) =>
 //make upload static
 const __dirname = path.resolve();
 app.use("/upload", express.static(path.join(__dirname, "/upload")));
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/frontend/build")));
+
+  app.get("*", (request, response) =>
+    response.sendFile(
+      path.resolve(__dirname, "frontend", "build", "index.html")
+    )
+  );
+} else {
+  //create route, is api running
+  app.get("/", (request, response) => {
+    response.send("API is running......");
+  });
+}
 
 //middleware
 app.use(notFound);
