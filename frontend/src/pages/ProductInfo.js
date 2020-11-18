@@ -66,9 +66,9 @@ function ProductInfo({ match, history }) {
       ) : (
         <div>
           <Row className="justify-content-center my-3">
-            <Image src={product.image} alt={product.name} />
+            <Image className='product-info-image' src={product.image} alt={product.name} />
           </Row>
-          <Row className="justify-content-center">
+          <Row className="justify-content-center product-info-details">
             <Col md={3}>
               <ListGroup variant="flush">
                 <ListGroup.Item variant="info" className="product-page-title">
@@ -146,7 +146,7 @@ function ProductInfo({ match, history }) {
             </Col>
           </Row>
           <Row className="justify-content-center">
-            <Col md={6} className="text-center">
+            <Col md={6} className="text-center product-info-reviews">
               <h5>Reviews</h5>
               {product.reviews.length === 0 && (
                 <Message variant="warning">No Reviews</Message>

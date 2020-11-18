@@ -46,7 +46,7 @@ function OrderList({ history }) {
             {adminOrders.map((order) => (
               <tr key={order._id}>
                 <td>{order._id}</td>
-                <td>{order.user.name}</td>
+                <td>{order.user && order.user.name}</td>
                 <td>
                   {order.totalPrice}
                 </td>

@@ -1,5 +1,5 @@
 main {
-    min-height: 80vh;
+  min-height: 80vh;
 }
 
 /* body {
@@ -8,42 +8,59 @@ main {
 } */
 
 .pagination {
-    justify-content: center;
+  justify-content: center;
 }
 .card .price {
-    color: salmon;
-    padding-top: 10px;
+  color: salmon;
+  padding-top: 10px;
 }
 
 .product-card {
-    width: 250px;
+  width: 250px;
 }
 
 .product-container {
-    flex-grow: 0;
-    display: flex;
-    justify-content: center;
+  flex-grow: 0;
+  display: flex;
+  justify-content: center;
 }
 
 .product-page-title {
-    text-align: center;
+  text-align: center;
+}
+
+.product-info-image {
+  max-width: 500px;
+}
+
+.product-info-reviews {
+  padding-top: 40px;
+}
+
+.product-info-details {
+  padding-top: 40px;
 }
 
 .spinner.loader {
-    width: 100px;
-    height: 100px;
-    margin: auto;
-    display: block;
+  width: 100px;
+  height: 100px;
+  margin: auto;
+  display: block;
 }
 
 .search-bar {
-    display: flex;
+  display: flex;
+}
+
+.carousel {
+    height: 650px;
 }
 
 .carousel-item-next,
 .carousel-item-prev,
 .carousel-item.active {
   display: flex;
+  
 }
 .carousel-caption {
   position: absolute;
@@ -51,13 +68,13 @@ main {
   padding: 10px;
   box-sizing: border-box;
 }
- 
+
 .carousel-caption h4 {
   color: #fff;
 }
- 
-.carousel img { 
-  height: 520px;
+
+.carousel img {
+  max-width: 415px;
   padding: 40px;
 
   display: block;
@@ -69,9 +86,9 @@ main {
 .carousel a {
   margin: 0 auto;
 }
- 
+
 @media (max-width: 900px) {
   .carousel-caption h4 {
-    font-size: 2.5vw;
+    font-size: 4.5vw;
   }
 }

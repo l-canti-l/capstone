@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import Product from "../components/Product";
 import Pages from "../components/Pages";
 import Loader from '../components/Loader';
@@ -27,7 +28,7 @@ function Home({ match }) {
   return (
     <div>
       {!searchTerm && <TopProducts />}
-      <h2>Latest Work</h2>
+      {searchTerm ? <h2>Results</h2> : <h2>Latest Work</h2>}
       {/* check if loading */}
       {loading ? (
         <Loader />
@@ -45,6 +46,7 @@ function Home({ match }) {
           ))}
         </Row>
         <Pages pages={pages} page={page} searchTerm={searchTerm ? searchTerm : ''}></Pages>
+        {searchTerm && <div className='product-container'><Link to='/' className='btn btn-info text-center'>Back</Link></div>}
         </div>
       )}
     </div>
